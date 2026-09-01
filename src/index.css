@@ -25,6 +25,7 @@
     font-family: "DM Sans", serif;
     font-optical-sizing: auto;
     background: #030014;
+    @apply overflow-x-hidden;
   }
 
   h1 {
@@ -50,7 +51,7 @@
 
 @layer components {
   .pattern {
-    @apply bg-hero-pattern w-screen h-screen bg-center bg-cover absolute z-0;
+    @apply bg-hero-pattern w-full h-screen bg-center bg-cover absolute z-0;
   }
 
   .wrapper {
@@ -61,7 +62,7 @@
     @apply mt-20;
 
     & ul {
-      @apply flex flex-row overflow-y-auto gap-5 -mt-10 w-full hide-scrollbar;
+      @apply flex flex-row overflow-x-auto gap-5 -mt-10 w-full hide-scrollbar;
     }
 
     & ul li {
@@ -78,7 +79,7 @@
   }
 
   .search {
-    @apply w-full bg-light-100/5 px-4 py-3 rounded-lg mt-10 max-w-3xl mx-auto;
+    @apply w-full bg-light-100/5 px-4 py-3 rounded-lg mt-10 max-w-3xl mx-auto transition-all duration-300 hover:bg-light-100/10 focus-within:ring-2 focus-within:ring-light-200/50 focus-within:bg-light-100/10;
 
     & div {
       @apply relative flex items-center;
@@ -102,10 +103,10 @@
   }
 
   .movie-card {
-    @apply bg-dark-100 p-5 rounded-2xl shadow-inner shadow-light-100/10;
+    @apply bg-dark-100 p-5 rounded-2xl shadow-inner shadow-light-100/10 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-light-100/20 cursor-pointer hover:bg-dark-100/80;
 
     & img {
-      @apply rounded-lg h-auto w-full;
+      @apply rounded-lg h-auto w-full aspect-[2/3] object-cover bg-black/20;
     }
 
     & h3 {

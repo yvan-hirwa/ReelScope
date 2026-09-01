@@ -91,8 +91,15 @@ const App = () => {
           {loading ? (
             <Spinner />
           ) : errorMessage ? (
-            <p className="text-red-500">{errorMessage}</p>
-          ): (
+            <div className="bg-red-500/10 border border-red-500/50 p-5 rounded-xl text-center">
+              <p className="text-red-400 font-medium">{errorMessage}</p>
+            </div>
+          ) : movieList.length === 0 ? (
+            <div className="text-center py-10 mt-10 text-gray-100 bg-dark-100/50 rounded-2xl border border-light-100/10">
+              <p className="text-xl font-medium mb-2">No movies found</p>
+              <p className="text-sm">Try adjusting your search to find what you're looking for.</p>
+            </div>
+          ) : (
             <ul>
               {movieList.map((movie) => (
                 <MovieCard key={movie.id} movie={movie}/>
