@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import Search from "./components/search"
-import Spinner from "./components/spinner";
+import Search from "./components/Search"
+import Spinner from "./components/Spinner";
 import MovieCard from "./components/MovieCard";
 import { useDebounce } from "react-use";
 import { updateSearchCount } from "./appwrite";
@@ -18,17 +18,24 @@ const API_OPTIONS = {
 }
 
 const App = () => {
-  const [searchTerm, setsearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [movieList, setMovieList] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [debouncedSearchTerm, setdebouncedSearchTerm] = useState('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
 
-  useDebounce(() => setdebouncedSearchTerm(searchTerm), 500, [searchTerm]);
+  useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm]);
+
 
   const fetchmovies = async (query= '') => {
     setLoading(true);
     setErrorMessage('');
+
+    if (!API_KEY) {
+      setErrorMessage('TMDB API Key is missing. Please add VITE_TMDB_API_KEY to your .env file.');
+      setLoading(false);
+      return;
+    }
 
     try {
       const endpoint = query 
@@ -43,8 +50,8 @@ const App = () => {
 
       const data = await response.json();
       
-      if(data.response === 'false') {
-        setErrorMessage(data.Error || 'No movies found');
+      if(data.success === false) {
+        setErrorMessage(data.status_message || 'Failed to fetch movies');
         setMovieList([]);
         return;
       }
@@ -52,7 +59,7 @@ const App = () => {
 
       if(query && data.results.length > 0) {
         const movie = data.results[0];
-        await updateSearchCount(query, movie);
+        updateSearchCount(query, movie);
       }
 
     } catch (error) {
@@ -75,7 +82,7 @@ const App = () => {
           <img src="./hero.png" alt="Hero-banner" />
           <h1>Find <span className='text-gradient'>Movies</span> You'll Enjoy Without the Hassle</h1>
         
-        <Search searchTerm ={searchTerm} setsearchTerm = {setsearchTerm} />
+        <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         </header>
 
         <section className="all-movies">

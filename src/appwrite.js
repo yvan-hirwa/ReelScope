@@ -16,6 +16,8 @@ export const updateSearchCount = async (searchTerm, movie) => {
     // If it does, update the count
     // If it doesn't, create a new document with the search term and count of 1
     try {
+        if (!PROJECT_ID || !DATABASE_ID || !COLLECTION_ID) return;
+
         const result = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
             Query.equal('searchTerm', searchTerm),
         ]);
